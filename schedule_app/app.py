@@ -141,7 +141,7 @@ with tab_staff:
                     if hours < 0:
                         hours += 12
 
-                    lines.append(f"{d.month}.{d.day} {d.strftime('%a')}  {start}-{end}  ({hours}h)")
+                    lines.append(f"{d.month}.{d.day} {d.strftime('%a')}  {start} - {end}  ({hours}h)")
                     total += hours
                     found = True
 
