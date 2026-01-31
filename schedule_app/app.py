@@ -19,18 +19,24 @@ tab_staff, tab_admin = st.tabs(["👥 직원", "👑 관리자"])
 
 with tab_admin:
 
+    st.header("👑 관리자")
+
     pw = st.text_input("관리자 비밀번호", type="password")
 
     if pw == ADMIN_PASSWORD:
         st.success("관리자 로그인 완료")
 
-        uploaded = st.file_uploader("근무 엑셀 업로드", type=["xlsx"])
+        if os.path.exists(DATA_FILE):
+            st.info("현재 업로드된 파일: schedule.xlsx")
+
+        uploaded = st.file_uploader("근무 엑셀 업로드 / 교체", type=["xlsx"])
 
         if uploaded:
             with open(DATA_FILE,"wb") as f:
                 f.write(uploaded.getbuffer())
 
             st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
+            st.experimental_rerun()
 
     elif pw:
         st.error("비밀번호가 틀렸습니다")
