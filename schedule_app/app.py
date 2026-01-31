@@ -101,8 +101,6 @@ with tab_staff:
 
     names = sorted({item["name"] for v in schedule.values() for item in v})
 
-    st.divider()
-
     target = st.selectbox("이름 선택", names)
 
     if target:
