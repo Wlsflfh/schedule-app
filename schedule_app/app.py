@@ -5,6 +5,7 @@ import os
 from datetime import date
 from collections import defaultdict
 
+CURRENT_FILE = "current_name.xlsx"
 DATA_FILE = "schedule.xlsx"
 ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD","heritageclub_75")
 
@@ -22,18 +23,20 @@ with tab_admin:
     st.header("👑 관리자")
 
     pw = st.text_input("관리자 비밀번호", type="password")
-    st.info(f"현재 업로드된 파일: {DATA_FILE}")
+    if os.path.exists(CURRENT_FILE):
+        real_name = open(CURRENT_FILE).read()
+        st.info(f"현재 업로드된 파일: {real_name}")
+    else:
+        real_name = DATA_FILE
 
     if pw == ADMIN_PASSWORD:
         st.success("관리자 로그인 완료")
 
         if os.path.exists(DATA_FILE):
-
             if st.button("🗑️ 현재 파일 삭제"):
                 os.remove(DATA_FILE)
                 st.warning("근무 파일이 삭제되었습니다.")
                 st.rerun()
-
         else:
             st.info("업로드된 파일이 없습니다.")
 
@@ -42,6 +45,9 @@ with tab_admin:
         if uploaded:
             with open(DATA_FILE,"wb") as f:
                 f.write(uploaded.getbuffer())
+                
+            with open(CURRENT_FILE,"w") as f:
+                f.write(uploaded.name)
 
             st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
             st.rerun()
