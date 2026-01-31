@@ -129,6 +129,7 @@ with tab_staff:
 
         total = 0
         found = False
+        lines = []
 
         for d in sorted(schedule.keys()):
             for item in schedule[d]:
@@ -140,9 +141,11 @@ with tab_staff:
                     if hours < 0:
                         hours += 12
 
-                    st.write(f"{d.month}.{d.day} {d.strftime('%a')}  {start}-{end}  ({hours}h)")
+                    lines.append(f"{d.month}.{d.day} {d.strftime('%a')}  {start}-{end}  ({hours}h)")
                     total += hours
                     found = True
+
+        st.text("\n".join(lines))
 
         if found:
             st.success(f"총 근무시간: {total}h")
