@@ -22,12 +22,20 @@ with tab_admin:
     st.header("👑 관리자")
 
     pw = st.text_input("관리자 비밀번호", type="password")
+    st.info(f"현재 업로드된 파일: {DATA_FILE}")
 
     if pw == ADMIN_PASSWORD:
         st.success("관리자 로그인 완료")
 
         if os.path.exists(DATA_FILE):
-            st.info(f"현재 업로드된 파일: {DATA_FILE}")
+
+            if st.button("🗑️ 현재 파일 삭제"):
+                os.remove(DATA_FILE)
+                st.warning("근무 파일이 삭제되었습니다.")
+                st.rerun()
+
+        else:
+            st.info("업로드된 파일이 없습니다.")
 
         uploaded = st.file_uploader("근무 엑셀 업로드 / 교체", type=["xlsx"])
 
