@@ -28,6 +28,7 @@ with tab_admin:
         st.info(f"현재 업로드된 파일: {real_name}")
     else:
         real_name = DATA_FILE
+        st.info("업로드된 파일이 없습니다.")
 
     if pw == ADMIN_PASSWORD:
         st.success("관리자 로그인 완료")
