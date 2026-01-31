@@ -156,6 +156,6 @@ with tab_staff:
         st.text("\n".join(lines))
 
         if found:
-            st.markdown(f"Total hours: {total}h")
+            st.markdown(f"### Total hours: {total}h")
         else:
             st.warning("존재하지 않는 이름입니다.")
