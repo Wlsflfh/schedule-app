@@ -36,7 +36,7 @@ with tab_admin:
                 f.write(uploaded.getbuffer())
 
             st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
-            st.experimental_rerun()
+            st.rerun()
 
     elif pw:
         st.error("비밀번호가 틀렸습니다")
