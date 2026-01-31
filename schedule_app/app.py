@@ -61,8 +61,7 @@ with tab_admin:
 ##################################
 
 with tab_staff:
-
-    st.subheader("📄 이번달 근무표")
+    st.markdown("###🗓️ 이번 달 근무 스케줄")
 
     if not os.path.exists(DATA_FILE):
         st.info("아직 근무 시간표가 나오지 않았습니다.")
@@ -158,6 +157,6 @@ with tab_staff:
         st.text("\n".join(lines))
 
         if found:
-            st.success(f"총 근무시간: {total}h")
+            st.success(f"Total hours: {total}h")
         else:
             st.warning("존재하지 않는 이름입니다.")
