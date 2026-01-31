@@ -1,49 +1,73 @@
 import streamlit as st
 import pandas as pd
 import re
+import os
 from datetime import date
 from collections import defaultdict
 
+DATA_FILE = "schedule.xlsx"
+
+ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD","heritageclub_75")
+
 st.set_page_config(page_title="근무 스케줄", layout="centered")
-st.title("📅 근무 스케줄 조회")
 
-uploaded_file = st.file_uploader("엑셀 파일 업로드 (HERITAGE_FEB.xlsx)", type=["xlsx"])
+mode = st.sidebar.radio("모드 선택", ["직원", "관리자"])
 
-if uploaded_file:
+####################################
+# 관리자
+####################################
 
-    # 1. Load excel
-    df = pd.read_excel(uploaded_file, header=None)
+if mode == "관리자":
 
-    # 2-1. Extract month
+    pw = st.text_input("관리자 비밀번호", type="password")
+
+    if pw != ADMIN_PASSWORD:
+        st.warning("비밀번호 입력")
+        st.stop()
+
+    st.success("관리자 로그인 완료")
+
+    uploaded = st.file_uploader("근무 엑셀 업로드", type=["xlsx"])
+
+    if uploaded:
+        with open(DATA_FILE,"wb") as f:
+            f.write(uploaded.getbuffer())
+
+        st.success("저장 완료!")
+
+####################################
+# 직원
+####################################
+
+else:
+
+    st.title("[HERITAGE CLUB] 근무 스케줄 조회")
+
+    if not os.path.exists(DATA_FILE):
+        st.info("아직 근무 시간표가 나오지 않았습니다.")
+        st.stop()
+
+    df = pd.read_excel(DATA_FILE, header=None)
+
     header = str(df.iloc[0,0])
     m = re.search(r'(\d{1,2})\s*월?', header)
-
-    if not m:
-        st.error("월 정보를 찾지 못했습니다")
-        st.stop()
 
     month = int(m.group(1))
     year = date.today().year
 
-    def month_date(month):
-        return date(year, month, 1)
+    base_date = date(year, month, 1)
 
-    base_date = month_date(month)
-
-    # 2-2. Extract schedule
     schedule = defaultdict(list)
     pattern = re.compile(r"([가-힣]+)\s*(\d+)\s*-\s*(마감|\d+)")
 
     active_dates = {}
 
     for row in range(len(df)):
-        # 날짜 감지
         for col in df.columns:
             v = str(df[col][row]).strip()
             if v.isdigit():
                 active_dates[col] = base_date.replace(day=int(v))
 
-        # 근무 파싱
         for col in df.columns:
             cell = str(df[col][row])
             m = pattern.search(cell)
@@ -54,7 +78,7 @@ if uploaded_file:
                 end = m.group(3)
 
                 if end == "마감":
-                    end = 11
+                    end = 23
                 else:
                     end = int(end)
 
@@ -64,34 +88,20 @@ if uploaded_file:
                     "end": end
                 })
 
-    # 이름 목록 자동 생성
-    names = sorted({item["name"] for v in schedule.values() for item in v})
+    names = sorted({i["name"] for v in schedule.values() for i in v})
 
-    st.divider()
+    target = st.selectbox("Select name", names)
 
-    target = st.selectbox("이름 선택", names)
+    total = 0
 
-    if target:
-        st.subheader(f"{base_date.strftime('%b')}. {target}의 근무")
+    for d in sorted(schedule.keys()):
+        for item in schedule[d]:
+            if item["name"] == target:
+                hours = item["end"] - item["start"]
+                if hours < 0:
+                    hours += 12
 
-        total = 0
-        found = False
+                st.write(f"{d.month}.{d.day} {item['start']}-{item['end']} ({hours}h)")
+                total += hours
 
-        for d in sorted(schedule.keys()):
-            for item in schedule[d]:
-                if item["name"] == target:
-                    start = int(item["start"])
-                    end = int(item["end"])
-
-                    hours = end - start
-                    if hours < 0:
-                        hours += 12
-
-                    st.write(f"{d.month}.{d.day} {d.strftime('%a')}  {start}-{end}  ({hours}h)")
-                    total += hours
-                    found = True
-
-        if found:
-            st.success(f"총 근무시간: {total}h")
-        else:
-            st.warning("존재하지 않는 이름입니다.")
+    st.success(f"Total hours: {total}h")
