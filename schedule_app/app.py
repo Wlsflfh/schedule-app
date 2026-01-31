@@ -62,9 +62,19 @@ with tab_admin:
 
 with tab_staff:
 
+    st.subheader("📄 이번달 근무표")
+
     if not os.path.exists(DATA_FILE):
         st.info("아직 근무 시간표가 나오지 않았습니다.")
         st.stop()
+
+    with open(DATA_FILE, "rb") as f:
+        st.download_button(
+            label="📥 근무표 엑셀 열기",
+            data=f,
+            file_name=real_name if 'real_name' in globals() else DATA_FILE,
+            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        )
 
     uploaded_file = DATA_FILE
 
