@@ -27,7 +27,7 @@ with tab_admin:
         st.success("관리자 로그인 완료")
 
         if os.path.exists(DATA_FILE):
-            st.info("현재 업로드된 파일: schedule.xlsx")
+            st.info(f"현재 업로드된 파일: {DATA_FILE}")
 
         uploaded = st.file_uploader("근무 엑셀 업로드 / 교체", type=["xlsx"])
 
