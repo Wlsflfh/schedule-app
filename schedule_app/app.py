@@ -39,8 +39,6 @@ with tab_admin:
                 os.remove(CURRENT_FILE)
                 st.warning("근무 파일이 삭제되었습니다.")
                 st.rerun()
-        else:
-            st.info("업로드된 파일이 없습니다.")
 
         uploaded = st.file_uploader("근무 엑셀 업로드 / 교체", type=["xlsx"])
 
