@@ -36,6 +36,7 @@ with tab_admin:
         if os.path.exists(DATA_FILE):
             if st.button("🗑️ 현재 파일 삭제"):
                 os.remove(DATA_FILE)
+                os.remove(CURRENT_FILE)
                 st.warning("근무 파일이 삭제되었습니다.")
                 st.rerun()
         else:
