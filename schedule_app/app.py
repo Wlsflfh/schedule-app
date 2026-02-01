@@ -143,7 +143,7 @@ with tab_staff:
 
         
     uploaded_file = DATA_FILE
-
+    # 월 정보 추출
     df = pd.read_excel(uploaded_file, header=None)
 
     header = str(df.iloc[0,0])
@@ -153,8 +153,8 @@ with tab_staff:
         st.error("월 정보를 찾지 못했습니다")
         st.stop()
 
-    month = int(m.group(1))
     year = date.today().year
+    month = int(m.group(1))
 
     def month_date(month):
         return date(year, month, 1)
@@ -162,14 +162,14 @@ with tab_staff:
     base_date = month_date(month)
 
     schedule = defaultdict(list)
-    pattern = re.compile(r"([가-힣]+)\s*(\d+)\s*-\s*(마감|\d+)")
+    pattern = re.compile(r"([가-힣]+)\s*(\d+(?:\.\d+)?)\s*-\s*(마감|\d+(?:\.\d+)?)")
 
     active_dates = {}
 
     for row in range(len(df)):
         for col in df.columns:
             v = str(df[col][row]).strip()
-            if v.isdigit():
+            if v.isdigit(): 
                 active_dates[col] = base_date.replace(day=int(v))
 
         for col in df.columns:
@@ -178,13 +178,13 @@ with tab_staff:
 
             if m and col in active_dates:
                 name = m.group(1)
-                start = int(m.group(2))
+                start = float(m.group(2))
                 end = m.group(3)
 
                 if end == "마감":
                     end = 11
                 else:
-                    end = int(end)
+                    end = float(end)
 
                 schedule[active_dates[col]].append({
                     "name": name,
@@ -206,14 +206,14 @@ with tab_staff:
         for d in sorted(schedule.keys()):
             for item in schedule[d]:
                 if item["name"] == target:
-                    start = int(item["start"])
-                    end = int(item["end"])
+                    start = float(item["start"])
+                    end = float(item["end"])
 
                     hours = end - start
                     if hours < 0:
                         hours += 12
 
-                    lines.append(f"{d.month}.{d.day} {d.strftime('%a')}  {start}-{end}  ({hours}h)")
+                    lines.append(f"{d.month}.{d.day} {d.strftime('%a')}  {start:g}-{end:g}  ({hours:.1f}h)")
                     total += hours
                     found = True
 
