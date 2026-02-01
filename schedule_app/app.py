@@ -20,18 +20,30 @@ tab_staff, tab_admin = st.tabs(["👥 직원", "👑 관리자"])
 ##################################
 
 with tab_admin:
+    # 로그인 상태 저장
+    if "admin" not in st.session_state:
+        st.session_state.admin = False
 
     st.markdown("### 👑 관리자")
     pw = st.text_input("관리자 비밀번호", type="password")
 
-    if pw != ADMIN_PASSWORD:
+    # 로그인 성공 시 상태 고정
+    if pw == ADMIN_PASSWORD:
+        st.session_state.admin = True
+
+    # 로그인 전
+    if not st.session_state.admin:
         if os.path.exists(CURRENT_FILE):
             real_name = open(CURRENT_FILE).read()
             st.info(f"현재 업로드된 파일: {real_name}")
         else:
             st.info("업로드된 파일이 없습니다.")
 
-    if pw == ADMIN_PASSWORD:
+        if pw:
+            st.error("비밀번호가 틀렸습니다")
+
+    # 로그인 후
+    if st.session_state.admin:
         st.success("관리자 로그인 완료")
 
         st.markdown("#### 📑 근무 스케줄 엑셀 업로드 / 교체")
@@ -72,9 +84,6 @@ with tab_admin:
 
             st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
             st.rerun()
-        
-    elif pw:
-        st.error("비밀번호가 틀렸습니다")
 
 ##################################
 # 직원 모드
