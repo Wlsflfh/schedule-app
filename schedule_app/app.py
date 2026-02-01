@@ -115,23 +115,30 @@ with tab_staff:
         
     if os.path.exists(IMAGE_FILE):
         st.image(IMAGE_FILE, use_column_width=True)
+    
+    col1, col2 = st.columns(2)
 
-        with open(IMAGE_FILE, "rb") as f:
+    with col1:
+        if os.path.exists(IMAGE_FILE):
+            with open(IMAGE_FILE, "rb") as f:
+                st.download_button(
+                    "📥 이미지 저장",
+                    f,
+                    file_name="schedule.png",
+                    mime="image/png",
+                    use_container_width=True
+                )
+
+    with col2:
+        with open(DATA_FILE, "rb") as f:
             st.download_button(
-                "📥 이미지 저장",
-                f,
-                file_name="schedule.png",
-                mime="image/png"
+                label="📥 근무표 엑셀 열기",
+                data=f,
+                file_name=real_name if 'real_name' in globals() else DATA_FILE,
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True
             )
-
-    with open(DATA_FILE, "rb") as f:
-        st.download_button(
-            label="📥 근무표 엑셀 열기",
-            data=f,
-            file_name=real_name if 'real_name' in globals() else DATA_FILE,
-            mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-        )
-
+        
     uploaded_file = DATA_FILE
 
     df = pd.read_excel(uploaded_file, header=None)
