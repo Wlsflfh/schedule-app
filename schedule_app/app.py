@@ -88,7 +88,7 @@ with tab_admin:
                 with open(IMAGE_FILE,"wb") as f:
                     f.write(img.getbuffer())
 
-            st.success("저장 완료! 직원들이 바로 조회 가능합니다.", icon="🎉")
+            st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
             st.rerun()
 
 ##################################
