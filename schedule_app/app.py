@@ -10,6 +10,8 @@ CURRENT_FILE = "current_name.xlsx"
 DATA_FILE = "schedule.xlsx"
 ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD","heritageclub_75")
 
+
+st.image("HERITAGE_CLUB.jpg", use_column_width=True)
 st.set_page_config(page_title="근무 스케줄", layout="centered")
 st.title("☕️ HERITAGE CLUB 근무 스케줄")
 
