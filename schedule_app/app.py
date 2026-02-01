@@ -67,7 +67,12 @@ with tab_admin:
                 st.warning("스케줄 이미지가 삭제되었습니다.")
                 st.rerun()
 
-        if st.button("💾 저장"):
+        col1, col2, col3 = st.columns([2,3,2])
+
+        with col2:
+            save = st.button("💾 저장", use_container_width=True)
+
+        if save:
             if not uploaded and not img:
                 st.warning("업로드할 파일이나 이미지를 선택하세요.")
                 st.stop()
@@ -83,7 +88,7 @@ with tab_admin:
                 with open(IMAGE_FILE,"wb") as f:
                     f.write(img.getbuffer())
 
-            st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
+            st.success("저장 완료! 직원들이 바로 조회 가능합니다.", icon="🎉")
             st.rerun()
 
 ##################################
