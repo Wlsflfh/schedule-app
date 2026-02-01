@@ -16,7 +16,7 @@ st.title("☕️ HERITAGE CLUB 근무 스케줄 조회")
 tab_staff, tab_admin = st.tabs(["👥 직원", "👑 관리자"])
 
 ##################################
-# 관리자
+# 관리자 모드
 ##################################
 
 with tab_admin:
@@ -34,7 +34,7 @@ with tab_admin:
     if pw == ADMIN_PASSWORD:
         st.success("관리자 로그인 완료")
 
-        st.markdown("#### 근무 스케줄 엑셀 업로드 / 교체")
+        st.markdown("#### 📑 근무 스케줄 엑셀 업로드 / 교체")
         uploaded = st.file_uploader("xlsx", type=["xlsx"])
 
         if uploaded:
@@ -55,7 +55,7 @@ with tab_admin:
                 st.rerun()
             
         st.divider()
-        st.markdown("#### 근무 스케줄 이미지 업로드 / 교체")
+        st.markdown("#### 🗓️ 근무 스케줄 이미지 업로드 / 교체")
 
         img = st.file_uploader("PNG / JPG", type=["png","jpg","jpeg"], key="img")
 
@@ -75,7 +75,7 @@ with tab_admin:
         st.error("비밀번호가 틀렸습니다")
 
 ##################################
-# 직원 (기존 코드 그대로)
+# 직원 모드
 ##################################
 
 with tab_staff:
@@ -98,10 +98,6 @@ with tab_staff:
         )
 
     uploaded_file = DATA_FILE
-
-    # =========================
-    # ↓↓↓ 여기부터 네 코드 그대로 ↓↓↓
-    # =========================
 
     df = pd.read_excel(uploaded_file, header=None)
 
