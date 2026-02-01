@@ -150,7 +150,7 @@ with tab_staff:
     target = st.selectbox("이름 선택", names)
 
     if target:
-        st.subheader(f"{base_date.strftime('%b')}. {target}의 근무")
+        st.subheader(f"{base_date.month}월 {target}의 근무")
 
         total = 0
         found = False
