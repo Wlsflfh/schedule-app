@@ -213,13 +213,13 @@ with tab_staff:
                     if hours < 0:
                         hours += 12
 
-                    lines.append(f"{d.month}.{d.day} {d.strftime('%a')}  {start:g}-{end:g}  ({hours:.1f}h)")
+                    lines.append(f"{d.month}.{d.day} {d.strftime('%a')}  {start:g}-{end:g}  ({hours:g}h)")
                     total += hours
                     found = True
 
         st.text("\n".join(lines))
 
         if found:
-            st.markdown(f"#### Total hours: {total}h")
+            st.markdown(f"#### Total hours: {total:g}h")
         else:
             st.warning("존재하지 않는 이름입니다.")
