@@ -36,18 +36,8 @@ with tab_admin:
 
         st.markdown("#### 📑 근무 스케줄 엑셀 업로드 / 교체")
         uploaded = st.file_uploader("xlsx", type=["xlsx"])
-
-        if uploaded:
-            with open(DATA_FILE,"wb") as f:
-                f.write(uploaded.getbuffer())
-                
-            with open(CURRENT_FILE,"w") as f:
-                f.write(uploaded.name)
-
-            st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
-            st.rerun()
             
-        if os.path.exists(DATA_FILE):
+        if os.path.exists(DATA_FILE) and os.path.exists(CURRENT_FILE):
             if st.button("🗑️ 현재 파일 삭제"):
                 os.remove(DATA_FILE)
                 os.remove(CURRENT_FILE)
@@ -59,17 +49,29 @@ with tab_admin:
 
         img = st.file_uploader("PNG / JPG", type=["png","jpg","jpeg"], key="img")
 
-        if img:
-            with open(IMAGE_FILE,"wb") as f:
-                f.write(img.getbuffer())
-
-            st.success("이미지 저장 완료!")
-            st.rerun()
-
         if os.path.exists(IMAGE_FILE):
             if st.button("🗑️ 현재 이미지 삭제"):
                 os.remove(IMAGE_FILE)
                 st.rerun()
+
+        if st.button("💾 저장"):
+            if not uploaded and not img:
+                st.warning("업로드할 파일이나 이미지를 선택하세요.")
+                st.stop()
+
+            if uploaded:
+                with open(DATA_FILE,"wb") as f:
+                    f.write(uploaded.getbuffer())
+
+                with open(CURRENT_FILE,"w") as f:
+                    f.write(uploaded.name)
+
+            if img:
+                with open(IMAGE_FILE,"wb") as f:
+                    f.write(img.getbuffer())
+
+            st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
+            st.rerun()
         
     elif pw:
         st.error("비밀번호가 틀렸습니다")
