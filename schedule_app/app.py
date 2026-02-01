@@ -46,7 +46,7 @@ with tab_admin:
     if st.session_state.admin:
         st.success("관리자 로그인 완료")
 
-        st.markdown("#### 📑 근무 스케줄 엑셀 업로드 / 교체")
+        st.markdown("#### 🗃️ 근무 스케줄 엑셀 업로드 / 교체")
         uploaded = st.file_uploader("xlsx", type=["xlsx"])
             
         if os.path.exists(DATA_FILE) and os.path.exists(CURRENT_FILE):
@@ -64,6 +64,7 @@ with tab_admin:
         if os.path.exists(IMAGE_FILE):
             if st.button("🗑️ 현재 이미지 삭제"):
                 os.remove(IMAGE_FILE)
+                st.warning("스케줄 이미지가 삭제되었습니다.")
                 st.rerun()
 
         if st.button("💾 저장"):
