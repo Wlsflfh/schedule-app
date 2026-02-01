@@ -20,6 +20,13 @@ tab_staff, tab_admin = st.tabs(["👥 직원", "👑 관리자"])
 ##################################
 
 with tab_admin:
+    with st.expander("ℹ️ 근무 유의사항"):
+        st.markdown("""
+        - 출근 시간 5분 전 도착
+        - 교대 시 인수인계 필수
+        - 근무 변경은 하루 전 공유
+        """)
+
     # 로그인 상태 저장
     if "admin" not in st.session_state:
         st.session_state.admin = False
@@ -104,7 +111,6 @@ with tab_staff:
 
     if os.path.exists(IMAGE_FILE):
         st.image(IMAGE_FILE, use_column_width=True)
-
 
     with open(DATA_FILE, "rb") as f:
         st.download_button(
