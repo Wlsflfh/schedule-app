@@ -122,7 +122,7 @@ with tab_staff:
         if os.path.exists(IMAGE_FILE):
             with open(IMAGE_FILE, "rb") as f:
                 st.download_button(
-                    "📥 이미지 저장",
+                    "🎞️ 이미지 저장",
                     f,
                     file_name="schedule.png",
                     mime="image/png",
@@ -132,7 +132,7 @@ with tab_staff:
     with col2:
         with open(DATA_FILE, "rb") as f:
             st.download_button(
-                label="📥 근무표 엑셀 열기",
+                label="📥 엑셀 파일 저장",
                 data=f,
                 file_name=real_name if 'real_name' in globals() else DATA_FILE,
                 mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
