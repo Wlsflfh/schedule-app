@@ -220,6 +220,12 @@ with tab_staff:
         st.text("\n".join(lines))
 
         if found:
-            st.markdown(f"#### Total hours: {total:g}h")
+            total_hours = int(total)
+            total_minutes = round((total - total_hours) * 60)
+
+            if total_minutes == 0:
+                st.markdown(f"#### Total hours: {total_hours}h")
+            else:
+                st.markdown(f"#### Total hours: {total_hours}h {total_minutes}m")
         else:
             st.warning("존재하지 않는 이름입니다.")
