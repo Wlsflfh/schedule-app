@@ -22,14 +22,15 @@ tab_staff, tab_admin = st.tabs(["👥 직원", "👑 관리자"])
 with tab_admin:
 
     st.markdown("### 👑 관리자")
-
     pw = st.text_input("관리자 비밀번호", type="password")
     if os.path.exists(CURRENT_FILE):
         real_name = open(CURRENT_FILE).read()
         st.info(f"현재 업로드된 파일: {real_name}")
+        st.rerun()
     else:
         real_name = DATA_FILE
         st.info("업로드된 파일이 없습니다.")
+        st.rerun()
 
     if pw == ADMIN_PASSWORD:
         st.success("관리자 로그인 완료")
@@ -67,7 +68,7 @@ with tab_admin:
             st.rerun()
 
         if os.path.exists(IMAGE_FILE):
-            if st.button("🗑️ 이미지 삭제"):
+            if st.button("🗑️ 현재 이미지 삭제"):
                 os.remove(IMAGE_FILE)
                 st.rerun()
         
