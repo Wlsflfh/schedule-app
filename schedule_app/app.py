@@ -11,7 +11,7 @@ DATA_FILE = "schedule.xlsx"
 ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD","heritageclub_75")
 
 st.set_page_config(page_title="근무 스케줄", layout="centered")
-st.title("☕️ HERITAGE CLUB 근무 스케줄 조회")
+st.title("☕️ HERITAGE CLUB 근무 스케줄")
 
 tab_staff, tab_admin = st.tabs(["👥 직원", "👑 관리자"])
 
