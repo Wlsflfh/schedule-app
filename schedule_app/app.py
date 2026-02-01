@@ -21,7 +21,7 @@ tab_staff, tab_admin = st.tabs(["👥 직원", "👑 관리자"])
 
 with tab_admin:
 
-    st.header("👑 관리자")
+    st.markdown("### 👑 관리자")
 
     pw = st.text_input("관리자 비밀번호", type="password")
     if os.path.exists(CURRENT_FILE):
@@ -34,14 +34,8 @@ with tab_admin:
     if pw == ADMIN_PASSWORD:
         st.success("관리자 로그인 완료")
 
-        if os.path.exists(DATA_FILE):
-            if st.button("🗑️ 현재 파일 삭제"):
-                os.remove(DATA_FILE)
-                os.remove(CURRENT_FILE)
-                st.warning("근무 파일이 삭제되었습니다.")
-                st.rerun()
-
-        uploaded = st.file_uploader("근무 엑셀 업로드 / 교체", type=["xlsx"])
+        st.markdown("#### 근무 스케줄 엑셀 업로드 / 교체")
+        uploaded = st.file_uploader("xlsx", type=["xlsx"])
 
         if uploaded:
             with open(DATA_FILE,"wb") as f:
@@ -53,8 +47,15 @@ with tab_admin:
             st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
             st.rerun()
             
+        if os.path.exists(DATA_FILE):
+            if st.button("🗑️ 현재 파일 삭제"):
+                os.remove(DATA_FILE)
+                os.remove(CURRENT_FILE)
+                st.warning("근무 파일이 삭제되었습니다.")
+                st.rerun()
+            
         st.divider()
-        st.subheader("🖼️ 근무표 이미지 업로드 (선택)")
+        st.markdown("#### 근무 스케줄 이미지 업로드 / 교체")
 
         img = st.file_uploader("PNG / JPG", type=["png","jpg","jpeg"], key="img")
 
@@ -65,6 +66,11 @@ with tab_admin:
             st.success("이미지 저장 완료!")
             st.rerun()
 
+        if os.path.exists(IMAGE_FILE):
+            if st.button("🗑️ 이미지 삭제"):
+                os.remove(IMAGE_FILE)
+                st.rerun()
+        
     elif pw:
         st.error("비밀번호가 틀렸습니다")
 
