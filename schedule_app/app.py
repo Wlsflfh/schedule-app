@@ -121,6 +121,16 @@ with tab_staff:
     col1, col2 = st.columns(2)
 
     with col1:
+        with open(DATA_FILE, "rb") as f:
+            st.download_button(
+                label="📥 엑셀 파일 저장",
+                data=f,
+                file_name=real_name if 'real_name' in globals() else DATA_FILE,
+                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                use_container_width=True
+            )
+
+    with col2:
         if os.path.exists(IMAGE_FILE):
             with open(IMAGE_FILE, "rb") as f:
                 st.download_button(
@@ -131,15 +141,6 @@ with tab_staff:
                     use_container_width=True
                 )
 
-    with col2:
-        with open(DATA_FILE, "rb") as f:
-            st.download_button(
-                label="📥 엑셀 파일 저장",
-                data=f,
-                file_name=real_name if 'real_name' in globals() else DATA_FILE,
-                mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                use_container_width=True
-            )
         
     uploaded_file = DATA_FILE
 
