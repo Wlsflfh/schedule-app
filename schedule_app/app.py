@@ -5,6 +5,7 @@ import os
 from datetime import date
 from collections import defaultdict
 
+IMAGE_FILE = "schedule_preview.png"
 CURRENT_FILE = "current_name.xlsx"
 DATA_FILE = "schedule.xlsx"
 ADMIN_PASSWORD = st.secrets.get("ADMIN_PASSWORD","heritageclub_75")
@@ -51,6 +52,18 @@ with tab_admin:
 
             st.success("저장 완료! 직원들이 바로 조회 가능합니다.")
             st.rerun()
+            
+        st.divider()
+        st.subheader("🖼️ 근무표 이미지 업로드 (선택)")
+
+        img = st.file_uploader("PNG / JPG", type=["png","jpg","jpeg"], key="img")
+
+        if img:
+            with open(IMAGE_FILE,"wb") as f:
+                f.write(img.getbuffer())
+
+            st.success("이미지 저장 완료!")
+            st.rerun()
 
     elif pw:
         st.error("비밀번호가 틀렸습니다")
@@ -65,6 +78,10 @@ with tab_staff:
     if not os.path.exists(DATA_FILE):
         st.info("아직 근무 시간표가 나오지 않았습니다.")
         st.stop()
+
+    if os.path.exists(IMAGE_FILE):
+        st.image(IMAGE_FILE, use_column_width=True)
+
 
     with open(DATA_FILE, "rb") as f:
         st.download_button(
