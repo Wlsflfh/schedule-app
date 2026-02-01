@@ -112,9 +112,17 @@ with tab_staff:
     if not os.path.exists(DATA_FILE):
         st.info("아직 근무 시간표가 나오지 않았습니다.")
         st.stop()
-
+        
     if os.path.exists(IMAGE_FILE):
         st.image(IMAGE_FILE, use_column_width=True)
+
+        with open(IMAGE_FILE, "rb") as f:
+            st.download_button(
+                "📥 이미지 저장",
+                f,
+                file_name="schedule.png",
+                mime="image/png"
+            )
 
     with open(DATA_FILE, "rb") as f:
         st.download_button(
